@@ -1,0 +1,17 @@
+C:\Users\jgcre\OneDrive\Área de Trabalho\App de Gastos\src\main\java\com\controle\financeiro\ControleFinanceiroApplication.java
+C:\Users\jgcre\OneDrive\Área de Trabalho\App de Gastos\src\main\java\com\controle\financeiro\dto\LoginDTO.java
+C:\Users\jgcre\OneDrive\Área de Trabalho\App de Gastos\src\main\java\com\controle\financeiro\controller\AuthController.java
+C:\Users\jgcre\OneDrive\Área de Trabalho\App de Gastos\src\main\java\com\controle\financeiro\security\SecurityConfig.java
+C:\Users\jgcre\OneDrive\Área de Trabalho\App de Gastos\src\main\java\com\controle\financeiro\service\UserService.java
+C:\Users\jgcre\OneDrive\Área de Trabalho\App de Gastos\src\main\java\com\controle\financeiro\dto\GastoDTO.java
+C:\Users\jgcre\OneDrive\Área de Trabalho\App de Gastos\src\main\java\com\controle\financeiro\repository\GastoRepository.java
+C:\Users\jgcre\OneDrive\Área de Trabalho\App de Gastos\src\main\java\com\controle\financeiro\dto\TokenDTO.java
+C:\Users\jgcre\OneDrive\Área de Trabalho\App de Gastos\src\main\java\com\controle\financeiro\model\User.java
+C:\Users\jgcre\OneDrive\Área de Trabalho\App de Gastos\src\main\java\com\controle\financeiro\model\Categoria.java
+C:\Users\jgcre\OneDrive\Área de Trabalho\App de Gastos\src\main\java\com\controle\financeiro\service\GastoService.java
+C:\Users\jgcre\OneDrive\Área de Trabalho\App de Gastos\src\main\java\com\controle\financeiro\controller\GastoController.java
+C:\Users\jgcre\OneDrive\Área de Trabalho\App de Gastos\src\main\java\com\controle\financeiro\repository\UserRepository.java
+C:\Users\jgcre\OneDrive\Área de Trabalho\App de Gastos\src\main\java\com\controle\financeiro\security\JwtFilter.java
+C:\Users\jgcre\OneDrive\Área de Trabalho\App de Gastos\src\main\java\com\controle\financeiro\dto\RegisterDTO.java
+C:\Users\jgcre\OneDrive\Área de Trabalho\App de Gastos\src\main\java\com\controle\financeiro\model\Gasto.java
+C:\Users\jgcre\OneDrive\Área de Trabalho\App de Gastos\src\main\java\com\controle\financeiro\security\JwtService.java
