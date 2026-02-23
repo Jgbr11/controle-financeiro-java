@@ -1,4 +1,4 @@
-// ===== GASTOS PAGE - CRUD OPERATIONS =====
+// ===== PÁGINA DE GASTOS - OPERAÇÕES CRUD =====
 document.addEventListener('DOMContentLoaded', function () {
 
     const modal = document.getElementById('modalGasto');
@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const modalTitle = document.getElementById('modalTitle');
     const bsModal = modal ? new bootstrap.Modal(modal) : null;
 
-    // ===== CREATE / UPDATE =====
+    // ===== CRIAR / ATUALIZAR =====
     if (form) {
         form.addEventListener('submit', function (e) {
             e.preventDefault();
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const url = id ? '/api/gastos/' + id : '/api/gastos';
             const method = id ? 'PUT' : 'POST';
 
-            // Get CSRF token from cookie if present
+            // Busca o token CSRF do cookie, se presente
             const csrfMeta = document.querySelector('meta[name="_csrf"]');
             const headers = { 'Content-Type': 'application/json' };
             if (csrfMeta) headers['X-CSRF-TOKEN'] = csrfMeta.content;
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // ===== EDIT BUTTON =====
+    // ===== BOTÃO EDITAR =====
     document.querySelectorAll('.btn-edit').forEach(btn => {
         btn.addEventListener('click', function () {
             document.getElementById('gastoId').value = this.dataset.id;
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // ===== DELETE BUTTON =====
+    // ===== BOTÃO EXCLUIR =====
     document.querySelectorAll('.btn-del').forEach(btn => {
         btn.addEventListener('click', function () {
             if (!confirm('Tem certeza que deseja excluir este gasto?')) return;
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // ===== RESET MODAL ON OPEN =====
+    // ===== RESETAR MODAL AO ABRIR =====
     if (modal) {
         modal.addEventListener('show.bs.modal', function (e) {
             if (e.relatedTarget && e.relatedTarget.classList.contains('btn-success')) {

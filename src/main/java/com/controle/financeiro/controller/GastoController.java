@@ -22,7 +22,7 @@ public class GastoController {
 
     private final GastoService gastoService;
 
-    // ===== VIEWS =====
+    // ===== PÁGINAS =====
 
     @GetMapping("/dashboard")
     public String dashboard(@AuthenticationPrincipal User user, Model model) {

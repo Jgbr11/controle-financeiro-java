@@ -1,18 +1,20 @@
-// ===== THEME TOGGLE =====
+// Alternância de tema claro/escuro
 (function () {
     const THEME_KEY = 'cf-theme';
 
+    // Retorna o tema salvo ou a preferência do sistema
     function getPreferred() {
         const saved = localStorage.getItem(THEME_KEY);
         if (saved) return saved;
         return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
     }
 
+    // Aplica o tema no documento e atualiza os elementos visuais
     function applyTheme(theme) {
         document.documentElement.setAttribute('data-theme', theme);
         localStorage.setItem(THEME_KEY, theme);
 
-        // Update toggle button icon
+        // Atualiza o ícone do botão de alternância
         const btn = document.getElementById('btnThemeToggle');
         if (btn) {
             const icon = btn.querySelector('i');
@@ -24,7 +26,7 @@
             btn.title = theme === 'dark' ? 'Mudar para tema claro' : 'Mudar para tema escuro';
         }
 
-        // Update Bootstrap table classes
+        // Atualiza as classes da tabela do Bootstrap
         document.querySelectorAll('.table-dark').forEach(function (el) {
             if (theme === 'light') {
                 el.classList.remove('table-dark');
@@ -38,7 +40,7 @@
             }
         });
 
-        // Update navbar Bootstrap classes
+        // Atualiza as classes da navbar
         const nav = document.querySelector('.navbar');
         if (nav) {
             if (theme === 'light') {
@@ -50,18 +52,18 @@
             }
         }
 
-        // Update Chart.js defaults if available
+        // Atualiza as cores padrão do Chart.js
         if (typeof Chart !== 'undefined') {
             Chart.defaults.color = theme === 'dark' ? '#8b949e' : '#57606a';
             Chart.defaults.borderColor = theme === 'dark' ? '#30363d' : '#d0d7de';
         }
     }
 
-    // Apply theme immediately (before DOM ready) to prevent flash
+    // Aplica o tema imediatamente para evitar flash de tela
     applyTheme(getPreferred());
 
     document.addEventListener('DOMContentLoaded', function () {
-        // Re-apply after DOM is ready to update buttons and tables
+        // Reaplica após o DOM estar pronto para atualizar botões e tabelas
         applyTheme(getPreferred());
 
         var btn = document.getElementById('btnThemeToggle');

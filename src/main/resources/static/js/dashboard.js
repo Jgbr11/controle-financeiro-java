@@ -1,12 +1,12 @@
-// ===== CHART.JS CONFIG =====
+// ===== CONFIGURAÇÃO DO CHART.JS =====
 Chart.defaults.color = '#8b949e';
 Chart.defaults.borderColor = '#30363d';
 Chart.defaults.font.family = "'Segoe UI', system-ui, sans-serif";
 
-const COLORS = ['#3fb950','#58a6ff','#d29922','#f85149','#bc8cff','#79c0ff','#56d364','#e3b341'];
+const COLORS = ['#3fb950', '#58a6ff', '#d29922', '#f85149', '#bc8cff', '#79c0ff', '#56d364', '#e3b341'];
 
-// ===== PIE CHART - CATEGORIAS =====
-(function() {
+// ===== GRÁFICO DE ROSCA - CATEGORIAS =====
+(function () {
     const ctx = document.getElementById('chartCategoria');
     if (!ctx || !categoriaData) return;
     const labels = Object.keys(categoriaData);
@@ -35,8 +35,8 @@ const COLORS = ['#3fb950','#58a6ff','#d29922','#f85149','#bc8cff','#79c0ff','#56
     });
 })();
 
-// ===== BAR CHART - MENSAL =====
-(function() {
+// ===== GRÁFICO DE BARRAS - MENSAL =====
+(function () {
     const ctx = document.getElementById('chartMensal');
     if (!ctx || !resumoMensal) return;
     const labels = resumoMensal.map(r => r.label);
@@ -67,8 +67,8 @@ const COLORS = ['#3fb950','#58a6ff','#d29922','#f85149','#bc8cff','#79c0ff','#56
     });
 })();
 
-// ===== LINE CHART - SEMANAL =====
-(function() {
+// ===== GRÁFICO DE LINHA - SEMANAL =====
+(function () {
     const ctx = document.getElementById('chartSemanal');
     if (!ctx || !resumoSemanal) return;
     const labels = resumoSemanal.map(r => r.label);

@@ -25,7 +25,7 @@ public class AuthController {
     private final JwtService jwtService;
     private final UserService userService;
 
-    // ===== VIEWS =====
+    // ===== PÁGINAS =====
 
     @GetMapping("/")
     public String home() {
@@ -46,11 +46,11 @@ public class AuthController {
     public String register(@RequestParam String nome,
             @RequestParam String email,
             @RequestParam String senha) {
-        // Validate email format
+        // Valida o formato do email
         if (!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
             return "redirect:/register?error=email_invalido";
         }
-        // Validate password: at least 6 chars, 1 uppercase, 1 special character
+        // Valida a senha: pelo menos 6 caracteres, 1 maiúscula e 1 caractere especial
         if (senha.length() < 6 || !senha.matches(".*[A-Z].*") || !senha.matches(".*[@#$%^&+=!*()\\-_].*")) {
             return "redirect:/register?error=senha_fraca";
         }
