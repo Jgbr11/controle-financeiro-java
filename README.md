@@ -388,12 +388,6 @@ Contribuições são sempre bem-vindas! Para contribuir:
 
 ---
 
-## 📝 Licença
-
-Este projeto está sob a licença **MIT**. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
----
-
 ## 👨‍💻 Autor
 
 <table>
@@ -401,7 +395,7 @@ Este projeto está sob a licença **MIT**. Veja o arquivo [LICENSE](LICENSE) par
     <td align="center">
       <strong>João Guilherme de Souza Cordeiro</strong><br/>
       Desenvolvedor Full Stack<br/><br/>
-      <a href="https://github.com/seu-usuario">
+      <a href="https://github.com/Jgbr11">
         <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" />
       </a>
     </td>
