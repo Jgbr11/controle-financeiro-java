@@ -36,6 +36,12 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/gastos/mes"><i class="bi bi-calendar-month me-1"></i>Mensal</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/orcamentos"><i class="bi bi-piggy-bank me-1"></i>Orçamentos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/gastos-fixos"><i class="bi bi-pin-angle me-1"></i>Gastos Fixos</a>
+                    </li>
                 </ul>
                 <div class="d-flex align-items-center gap-2">
                     <span class="text-light me-1"><i class="bi bi-person-circle me-1"></i><span
@@ -175,6 +181,51 @@
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ORÇAMENTO POR CATEGORIA -->
+        <div class="row g-4 mb-4" th:if="${!statusOrcamentos.isEmpty()}">
+            <div class="col-12">
+                <div class="card glass-card border-0 shadow">
+                    <div class="card-header bg-transparent border-secondary">
+                        <h5 class="mb-0 text-light"><i class="bi bi-piggy-bank me-2 text-success"></i>Orçamento por
+                            Categoria</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6 col-lg-4" th:each="orc : ${statusOrcamentos}">
+                                <div class="budget-item p-3 rounded-3">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="fw-bold" th:text="${orc.descricaoCategoria}">Categoria</span>
+                                        <span class="badge"
+                                            th:classappend="${orc.status == 'vermelho'} ? 'bg-danger' : (${orc.status == 'amarelo'} ? 'bg-warning text-dark' : 'bg-success')">
+                                            <span th:if="${orc.status == 'vermelho'}">🔴 Ultrapassou</span>
+                                            <span th:if="${orc.status == 'amarelo'}">🟡 Próximo</span>
+                                            <span th:if="${orc.status == 'verde'}">🟢 OK</span>
+                                        </span>
+                                    </div>
+                                    <div class="progress budget-progress mb-2">
+                                        <div class="progress-bar" role="progressbar"
+                                            th:style="'width:' + ${orc.percentual} + '%'"
+                                            th:classappend="${orc.status == 'vermelho'} ? 'bg-danger' : (${orc.status == 'amarelo'} ? 'bg-warning' : 'bg-success')">
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <small class="text-secondary">R$ <span
+                                                th:text="${#numbers.formatDecimal(orc.gasto, 1, 2)}">0,00</span></small>
+                                        <small class="text-secondary">Limite: R$ <span
+                                                th:text="${#numbers.formatDecimal(orc.limite, 1, 2)}">0,00</span></small>
+                                    </div>
+                                    <small class="text-secondary" th:if="${orc.percentualReal > 100}">
+                                        <i class="bi bi-exclamation-triangle text-danger"></i>
+                                        <span th:text="${orc.percentualReal}">0</span>% do limite
+                                    </small>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

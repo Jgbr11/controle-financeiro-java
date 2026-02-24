@@ -13,18 +13,22 @@ import java.util.List;
 @Repository
 public interface GastoRepository extends JpaRepository<Gasto, Long> {
 
-    List<Gasto> findByUsuarioIdOrderByDataDesc(Long usuarioId);
+        List<Gasto> findByUsuarioIdOrderByDataDesc(Long usuarioId);
 
-    List<Gasto> findByUsuarioIdAndDataBetweenOrderByDataDesc(
-            Long usuarioId, LocalDate inicio, LocalDate fim);
+        List<Gasto> findByUsuarioIdAndDataBetweenOrderByDataDesc(
+                        Long usuarioId, LocalDate inicio, LocalDate fim);
 
-    @Query("SELECT COALESCE(SUM(g.valor), 0) FROM Gasto g WHERE g.usuario.id = :uid AND g.data BETWEEN :ini AND :fim")
-    BigDecimal sumValorByPeriodo(@Param("uid") Long usuarioId,
-                                @Param("ini") LocalDate inicio,
-                                @Param("fim") LocalDate fim);
+        @Query("SELECT COALESCE(SUM(g.valor), 0) FROM Gasto g WHERE g.usuario.id = :uid AND g.data BETWEEN :ini AND :fim")
+        BigDecimal sumValorByPeriodo(@Param("uid") Long usuarioId,
+                        @Param("ini") LocalDate inicio,
+                        @Param("fim") LocalDate fim);
 
-    @Query("SELECT g.categoria, SUM(g.valor) FROM Gasto g WHERE g.usuario.id = :uid AND g.data BETWEEN :ini AND :fim GROUP BY g.categoria")
-    List<Object[]> sumValorByCategoria(@Param("uid") Long usuarioId,
-                                      @Param("ini") LocalDate inicio,
-                                      @Param("fim") LocalDate fim);
+        @Query("SELECT g.categoria, SUM(g.valor) FROM Gasto g WHERE g.usuario.id = :uid AND g.data BETWEEN :ini AND :fim GROUP BY g.categoria")
+        List<Object[]> sumValorByCategoria(@Param("uid") Long usuarioId,
+                        @Param("ini") LocalDate inicio,
+                        @Param("fim") LocalDate fim);
+
+        boolean existsByUsuarioIdAndDescricaoAndCategoriaAndDataBetween(
+                        Long usuarioId, String descricao, com.controle.financeiro.model.Categoria categoria,
+                        LocalDate inicio, LocalDate fim);
 }

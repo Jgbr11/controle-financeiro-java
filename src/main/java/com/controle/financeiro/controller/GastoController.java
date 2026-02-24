@@ -5,6 +5,8 @@ import com.controle.financeiro.model.Categoria;
 import com.controle.financeiro.model.Gasto;
 import com.controle.financeiro.model.User;
 import com.controle.financeiro.service.GastoService;
+import com.controle.financeiro.service.GastoFixoService;
+import com.controle.financeiro.service.OrcamentoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,11 +23,16 @@ import java.util.Map;
 public class GastoController {
 
     private final GastoService gastoService;
+    private final OrcamentoService orcamentoService;
+    private final GastoFixoService gastoFixoService;
 
     // ===== PÁGINAS =====
 
     @GetMapping("/dashboard")
     public String dashboard(@AuthenticationPrincipal User user, Model model) {
+        // Lança gastos fixos do mês automaticamente
+        gastoFixoService.lancarGastosFixosDoMes(user);
+
         model.addAttribute("totalSemana", gastoService.totalSemana(user.getId()));
         model.addAttribute("totalMes", gastoService.totalMes(user.getId()));
         model.addAttribute("mediaDiaria", gastoService.mediaDiaria(user.getId()));
@@ -33,6 +40,7 @@ public class GastoController {
         model.addAttribute("resumoSemanal", gastoService.resumoSemanal(user.getId()));
         model.addAttribute("resumoMensal", gastoService.resumoMensal(user.getId()));
         model.addAttribute("gastosRecentes", gastoService.listarTodos(user.getId()).stream().limit(5).toList());
+        model.addAttribute("statusOrcamentos", orcamentoService.statusOrcamentos(user.getId()));
         model.addAttribute("nomeUsuario", user.getNome());
         return "dashboard";
     }

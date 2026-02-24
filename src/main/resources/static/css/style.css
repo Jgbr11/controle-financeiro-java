@@ -284,3 +284,38 @@ body {
 .row .col-md-4:nth-child(3) .card {
     animation-delay: 0.2s;
 }
+
+/* ===== ORÇAMENTO POR CATEGORIA ===== */
+.budget-item {
+    background: rgba(48, 54, 61, 0.4);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    transition: background 0.3s ease;
+}
+
+.budget-item .fw-bold {
+    color: var(--text-primary) !important;
+}
+
+.budget-item small {
+    color: var(--text-secondary) !important;
+}
+
+[data-theme="light"] .budget-item {
+    background: rgba(208, 215, 222, 0.2);
+}
+
+.budget-progress {
+    height: 10px;
+    border-radius: 5px;
+    background: rgba(48, 54, 61, 0.6);
+}
+
+[data-theme="light"] .budget-progress {
+    background: rgba(208, 215, 222, 0.5);
+}
+
+.budget-progress .progress-bar {
+    border-radius: 5px;
+    transition: width 0.6s ease;
+}

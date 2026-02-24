@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gastos Fixos - Controle Financeiro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <script src="/js/theme.js"></script>
+</head>
+
+<body class="bg-dark text-light">
+    <!-- BARRA DE NAVEGAÇÃO -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-secondary">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold text-success" href="/dashboard">
+                <i class="bi bi-wallet2 me-2"></i>Controle Financeiro
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="/dashboard"><i
+                                class="bi bi-speedometer2 me-1"></i>Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/gastos"><i class="bi bi-list-ul me-1"></i>Gastos</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="/gastos/semana"><i
+                                class="bi bi-calendar-week me-1"></i>Semanal</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/gastos/mes"><i
+                                class="bi bi-calendar-month me-1"></i>Mensal</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/orcamentos"><i
+                                class="bi bi-piggy-bank me-1"></i>Orçamentos</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/gastos-fixos"><i
+                                class="bi bi-pin-angle me-1"></i>Gastos Fixos</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-2">
+                    <span class="text-light me-1"><i class="bi bi-person-circle me-1"></i><span
+                            th:text="${nomeUsuario}">Usuário</span></span>
+                    <button type="button" id="btnThemeToggle" class="btn-theme-toggle" title="Mudar tema">
+                        <i class="bi bi-sun-fill"></i>
+                    </button>
+                    <form th:action="@{/logout}" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-outline-danger btn-sm"><i
+                                class="bi bi-box-arrow-right me-1"></i>Sair</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="mb-0">
+                <i class="bi bi-pin-angle me-2 text-success"></i>Gastos Fixos Mensais
+            </h3>
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalGastoFixo">
+                <i class="bi bi-plus-lg me-1"></i>Novo Gasto Fixo
+            </button>
+        </div>
+
+        <!-- ALERTAS -->
+        <div id="alertSuccess" class="alert alert-success alert-dismissible fade d-none" role="alert">
+            <i class="bi bi-check-circle me-2"></i><span id="alertMsg"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+
+        <!-- INFO -->
+        <div class="alert alert-info border-0 mb-4" role="alert">
+            <i class="bi bi-info-circle me-2"></i>
+            Os gastos fixos ativos são lançados automaticamente todo mês ao acessar o Dashboard.
+        </div>
+
+        <!-- TABELA -->
+        <div class="card glass-card border-0 shadow">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover mb-0">
+                        <thead>
+                            <tr class="text-secondary">
+                                <th>#</th>
+                                <th>Descrição</th>
+                                <th>Categoria</th>
+                                <th>Valor</th>
+                                <th>Dia Venc.</th>
+                                <th>Status</th>
+                                <th class="text-center">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="gf, iter : ${gastosFixos}">
+                                <td th:text="${iter.index + 1}">1</td>
+                                <td th:text="${gf.descricao}">-</td>
+                                <td><span class="badge bg-secondary" th:text="${gf.categoria.descricao}">-</span></td>
+                                <td class="text-danger fw-bold">R$ <span
+                                        th:text="${#numbers.formatDecimal(gf.valor, 1, 2)}">0</span></td>
+                                <td>Dia <span th:text="${gf.diaVencimento}">1</span></td>
+                                <td>
+                                    <span th:if="${gf.ativo}" class="badge bg-success">Ativo</span>
+                                    <span th:unless="${gf.ativo}" class="badge bg-secondary">Inativo</span>
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-warning me-1 btn-edit-gf"
+                                        th:data-id="${gf.id}" th:data-descricao="${gf.descricao}"
+                                        th:data-valor="${gf.valor}" th:data-categoria="${gf.categoria}"
+                                        th:data-dia="${gf.diaVencimento}" th:data-ativo="${gf.ativo}">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger btn-del-gf" th:data-id="${gf.id}">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(gastosFixos)}">
+                                <td colspan="7" class="text-center text-secondary py-5">
+                                    <i class="bi bi-pin-angle display-4 d-block mb-2"></i>Nenhum gasto fixo cadastrado.
+                                    Adicione despesas recorrentes como aluguel, contas e assinaturas.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL NOVO/EDITAR GASTO FIXO -->
+    <div class="modal fade" id="modalGastoFixo" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content bg-dark text-light border-secondary">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title" id="modalTitle"><i class="bi bi-plus-circle me-2 text-success"></i>Novo
+                        Gasto Fixo</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="formGastoFixo">
+                    <div class="modal-body">
+                        <input type="hidden" id="gfId">
+                        <div class="mb-3">
+                            <label class="form-label">Descrição</label>
+                            <input type="text" id="descricao" class="form-control bg-dark text-light border-secondary"
+                                placeholder="Ex: Aluguel, Netflix, Água..." required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Valor (R$)</label>
+                            <input type="number" id="valor" class="form-control bg-dark text-light border-secondary"
+                                step="0.01" min="0.01" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Categoria</label>
+                            <select id="categoria" class="form-select bg-dark text-light border-secondary" required>
+                                <option value="">Selecione...</option>
+                                <option th:each="cat : ${categorias}" th:value="${cat}" th:text="${cat.descricao}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Dia de Vencimento</label>
+                            <input type="number" id="diaVencimento"
+                                class="form-control bg-dark text-light border-secondary" min="1" max="31" required>
+                        </div>
+                        <div class="mb-3 form-check form-switch">
+                            <input type="checkbox" id="ativo" class="form-check-input" checked>
+                            <label class="form-check-label" for="ativo">Ativo</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-secondary">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-success"><i class="bi bi-check-lg me-1"></i>Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const modal = document.getElementById('modalGastoFixo');
+            const form = document.getElementById('formGastoFixo');
+            const modalTitle = document.getElementById('modalTitle');
+            const bsModal = modal ? new bootstrap.Modal(modal) : null;
+
+            // Salvar / Atualizar
+            if (form) {
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    const id = document.getElementById('gfId').value;
+                    const payload = {
+                        descricao: document.getElementById('descricao').value,
+                        valor: parseFloat(document.getElementById('valor').value),
+                        categoria: document.getElementById('categoria').value,
+                        diaVencimento: parseInt(document.getElementById('diaVencimento').value),
+                        ativo: document.getElementById('ativo').checked
+                    };
+
+                    const url = id ? '/api/gastos-fixos/' + id : '/api/gastos-fixos';
+                    const method = id ? 'PUT' : 'POST';
+
+                    fetch(url, {
+                        method,
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload),
+                        credentials: 'same-origin'
+                    })
+                        .then(res => {
+                            if (res.ok) {
+                                bsModal.hide();
+                                showAlert(id ? 'Gasto fixo atualizado!' : 'Gasto fixo cadastrado!');
+                                setTimeout(() => location.reload(), 800);
+                            } else {
+                                res.json().then(data => alert('Erro: ' + JSON.stringify(data)));
+                            }
+                        })
+                        .catch(err => alert('Erro de conexão: ' + err));
+                });
+            }
+
+            // Editar
+            document.querySelectorAll('.btn-edit-gf').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    document.getElementById('gfId').value = this.dataset.id;
+                    document.getElementById('descricao').value = this.dataset.descricao;
+                    document.getElementById('valor').value = this.dataset.valor;
+                    document.getElementById('categoria').value = this.dataset.categoria;
+                    document.getElementById('diaVencimento').value = this.dataset.dia;
+                    document.getElementById('ativo').checked = this.dataset.ativo === 'true';
+                    modalTitle.innerHTML = '<i class="bi bi-pencil me-2 text-warning"></i>Editar Gasto Fixo';
+                    bsModal.show();
+                });
+            });
+
+            // Excluir
+            document.querySelectorAll('.btn-del-gf').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    if (!confirm('Tem certeza que deseja excluir este gasto fixo?')) return;
+                    fetch('/api/gastos-fixos/' + this.dataset.id, {
+                        method: 'DELETE',
+                        credentials: 'same-origin'
+                    })
+                        .then(res => {
+                            if (res.ok || res.status === 204) {
+                                showAlert('Gasto fixo excluído!');
+                                setTimeout(() => location.reload(), 800);
+                            }
+                        })
+                        .catch(err => alert('Erro: ' + err));
+                });
+            });
+
+            // Resetar ao abrir
+            if (modal) {
+                modal.addEventListener('show.bs.modal', function (e) {
+                    if (e.relatedTarget && e.relatedTarget.classList.contains('btn-success')) {
+                        form.reset();
+                        document.getElementById('gfId').value = '';
+                        document.getElementById('ativo').checked = true;
+                        modalTitle.innerHTML = '<i class="bi bi-plus-circle me-2 text-success"></i>Novo Gasto Fixo';
+                    }
+                });
+            }
+
+            function showAlert(msg) {
+                const el = document.getElementById('alertSuccess');
+                const msgEl = document.getElementById('alertMsg');
+                if (el && msgEl) {
+                    msgEl.textContent = msg;
+                    el.classList.remove('d-none');
+                    el.classList.add('show');
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
